@@ -26,4 +26,5 @@ sudo apt-get install -y docker-ce
 
 sudo usermod -aG docker $username
 
-sudo -u tyler.corrigan docker run docker/cowsay cowsay "All done!"
+newgrp docker
+sudo -u $username docker run docker/cowsay cowsay "All done!"
