@@ -3,28 +3,38 @@
 # installs docker
 
 username="$USER"
-printf "prime sudo:\n"
 
-sudo apt-get update
+if ! sudo ls > /dev/null; then
+	printf "prime sudo:\n"; sudo ls
+fi
 
-sudo apt-get -y install \
-    apt-transport-https \
-    ca-certificates \
-    curl \
-    software-properties-common
+function install() {
+	sudo apt-get update
 
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+	sudo apt-get -y install \
+    		apt-transport-https \
+    		ca-certificates \
+    		curl \
+    		software-properties-common
 
-sudo add-apt-repository \
-   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-   $(lsb_release -cs) \
-   stable"
+	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
-sudo apt-get update
+	sudo add-apt-repository \
+   		"deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   		$(lsb_release -cs) \
+   		stable"
 
-sudo apt-get install -y docker-ce
+	sudo apt-get update
 
-sudo usermod -aG docker $username
+	sudo apt-get install -y docker-ce
 
-newgrp docker
-sudo -u $username docker run docker/whalesay whalesay "All done!"
+	sudo usermod -aG docker $username
+
+	newgrp docker
+}
+
+if ! docker ps; then
+	install
+else
+	docker run docker/whalesay cowsay "All done!"
+fi
