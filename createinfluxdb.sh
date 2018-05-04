@@ -20,3 +20,5 @@ docker run -d --name influxdb \
       -v /data/influxdb:/var/lib/influxdb \
       -p 8086:8086 -p 8083:8083 \
       influxdb -config /etc/influxdb/influxdb.conf
+
+curl -XPOST http://localhost:8086/query --data-urlencode "q=ALTER RETENTIONPOLICY autogen ON jenkins DURATION 52w"
